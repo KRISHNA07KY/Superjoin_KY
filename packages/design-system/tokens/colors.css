@@ -1,0 +1,55 @@
+:root {
+  /* ---- surfaces / ink (light, research-grade / paper) ---- */
+  --bg: #F7F5F0;
+  --bg-deep: #EFEBE1;
+  --surface: #FFFFFF;
+  --surface-raised: #FBFAF6;
+  --surface-overlay: #F1EEE6;
+  --ink: #1B1C21;
+  --ink-2: #4B4E59;
+  --muted: #838792;
+  --line: #E4E1D8;
+  --line-strong: #D2CDBF;
+
+  /* ---- single restrained accent (evidence / links / primary actions) ---- */
+  --accent: #3E6DD8;
+  --accent-deep: #2F55AE;
+  --accent-soft: rgba(62, 109, 216, 0.1);
+
+  /* ---- relationship / confidence signal colors (muted, not saturated) ---- */
+  --corroborate: #1F8F5E;
+  --corroborate-soft: rgba(31, 143, 94, 0.12);
+  --corroborate-border: rgba(31, 143, 94, 0.32);
+
+  --contradict: #C23A57;
+  --contradict-soft: rgba(194, 58, 87, 0.12);
+  --contradict-border: rgba(194, 58, 87, 0.32);
+
+  --reconcile: #A16A17;
+  --reconcile-soft: rgba(161, 106, 23, 0.12);
+  --reconcile-border: rgba(161, 106, 23, 0.32);
+
+  --uncertain: #6B6F7C;
+  --uncertain-soft: rgba(107, 111, 124, 0.12);
+  --uncertain-border: rgba(107, 111, 124, 0.32);
+
+  /* ---- semantic aliases ---- */
+  --text-primary: var(--ink);
+  --text-secondary: var(--ink-2);
+  --text-muted: var(--muted);
+  --surface-page: var(--bg);
+  --surface-card: var(--surface);
+  --surface-inverse: var(--ink);
+  --border-default: var(--line);
+  --accent-default: var(--accent);
+
+  --danger: var(--contradict);
+  --danger-bg: var(--contradict-soft);
+  --danger-border: var(--contradict-border);
+  --success: var(--corroborate);
+  --success-bg: var(--corroborate-soft);
+  --success-border: var(--corroborate-border);
+  --warning-bg: var(--reconcile-soft);
+  --warning-border: var(--reconcile-border);
+  --warning-text: var(--reconcile);
+}

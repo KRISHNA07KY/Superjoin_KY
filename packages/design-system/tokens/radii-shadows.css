@@ -1,0 +1,11 @@
+:root {
+  /* tighter, more structured than a marketing site — nothing is a full pill except tags */
+  --r-sm: 6px; --r-md: 10px; --r-lg: 14px; --r-xl: 20px; --r-pill: 999px;
+
+  /* soft ambient shadows only — no hard "offset" comic shadows in this system */
+  --shadow-card: 0 1px 2px rgba(20,18,10,0.05), 0 8px 24px -12px rgba(20,18,10,0.12);
+  --shadow-pop: 0 4px 8px rgba(20,18,10,0.07), 0 16px 40px -16px rgba(20,18,10,0.16);
+  --shadow-nav: 0 1px 0 rgba(255,255,255,0.6) inset, 0 8px 24px -12px rgba(20,18,10,0.10);
+  --shadow-modal: 0 24px 64px -16px rgba(20,18,10,0.22);
+  --shadow-focus: 0 0 0 3px var(--accent-soft);
+}

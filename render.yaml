@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: groundwork-core
+    runtime: docker
+    dockerfilePath: ./services/core/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      # Set this after the groundwork-intelligence service below has deployed
+      # once and you have its public URL, e.g. https://groundwork-intelligence.onrender.com
+      - key: INTELLIGENCE_URL
+        sync: false
+      - key: CORE_PORT
+        value: 8080
+      # Neo4j intentionally omitted for the free-tier deploy: the pipeline
+      # already treats graph sync as best-effort and degrades gracefully
+      # when it can't connect (see services/core/src/pipeline.rs). Add
+      # NEO4J_URI / NEO4J_USER / NEO4J_PASSWORD here if you provision a
+      # Neo4j Aura Free instance and want the graph layer live too.
+
+  - type: web
+    name: groundwork-intelligence
+    runtime: docker
+    dockerfilePath: ./services/intelligence/Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: openai/gpt-oss-120b
+      - key: EMBEDDING_MODEL
+        value: BAAI/bge-small-en-v1.5
+      - key: INTELLIGENCE_PORT
+        value: 8000

@@ -1,0 +1,8 @@
+{
+  "name": "groundwork",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

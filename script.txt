@@ -1,0 +1,137 @@
+GROUNDWORK — 3-MINUTE DEMO SCRIPT
+==================================
+Format: [ON SCREEN: what to click/show]  →  "What to say"
+Before recording: make sure localhost:3000 is open, docker/core/intelligence
+are all running (see README "Setup and Run Instructions"), and the DB has
+the sample documents already processed (ask Claude to confirm, or check the
+Fact Explorer isn't empty) EXCEPT scripts/eval/synthetic/05-live-demo.pdf,
+which must be UNUSED so the live-upload segment shows real processing.
+
+------------------------------------------------------------
+0:00 – 0:20   INTRO
+------------------------------------------------------------
+[ON SCREEN: Groundwork homepage / empty chat, sidebar showing existing
+processed documents]
+
+"This is Groundwork — a fact knowledge layer. You give it PDFs, and instead
+of just reading text back to you, it extracts individual facts, links every
+one to the exact evidence it came from, and figures out when facts across
+different documents agree, disagree, or just look like they disagree because
+of context — different time periods, different units, different scope."
+
+------------------------------------------------------------
+0:20 – 0:50   LIVE UPLOAD + PROCESSING
+------------------------------------------------------------
+[ON SCREEN: click the upload zone in the sidebar, select
+scripts/eval/synthetic/05-live-demo.pdf]
+
+"Let's upload a new document live."
+
+[ON SCREEN: point at the document's status in the sidebar as it moves
+through stages — uploaded → processing → ready. If you have a moment,
+open the document row / jobs to show the checklist: text extraction, then
+chunking, then embeddings, then fact extraction.]
+
+"Nothing here is faked — you're watching the real pipeline: it extracts the
+text, splits it into chunks, embeds them, and then asks an LLM to pull out
+structured facts — each one tied back to the exact sentence it came from."
+
+------------------------------------------------------------
+0:50 – 1:15   ASK A QUESTION → CITED ANSWER → JUMP TO SOURCE
+------------------------------------------------------------
+[ON SCREEN: chat composer, type a question relevant to what's loaded, e.g.
+"What was Delhivery's FY24 revenue?" — press Enter]
+
+"Now let's ask it something. The answer isn't just a paragraph — it's built
+out of typed components: a fact card with the number and a confidence
+score, and inline citations."
+
+[ON SCREEN: click a citation chip / "View evidence" on the fact card — the
+right-hand panel opens showing the source PDF on the exact page]
+
+"Click any citation and it opens the original PDF to the exact page the
+number came from — no hunting through a 100-page report."
+
+------------------------------------------------------------
+1:15 – 1:40   CASE 1 — CORROBORATION (confirmed live result, 97% confidence)
+------------------------------------------------------------
+[ON SCREEN: Conflict Explorer, the UNIT_DIFFERENCE entry between the annual
+report's ₹840 crore and the investor deck's INR 8.4 billion]
+
+"Here are two documents — an annual report and an investor presentation —
+independently reporting FY2025 revenue: ₹840 crore in one, 8.4 billion
+rupees in the other. The system didn't just pattern-match the wording — it
+converted both to the same unit, confirmed 840 crore literally equals
+8.4 billion, and marked them as the same fact stated two ways. 97%
+confidence, because the arithmetic actually checks out."
+
+------------------------------------------------------------
+1:40 – 2:05   CASE 2 — CONTRADICTION (confirmed live result, 97% confidence)
+------------------------------------------------------------
+[ON SCREEN: Conflict Explorer, the CONTRADICTS entry — ₹910 crore (press
+release) vs ₹840 crore (annual report), both FY2025]
+
+"Now here's a real conflict: two documents both claiming FY2025 consolidated
+revenue for the same company, but one says ₹910 crore and the other says
+₹840 crore — same entity, same metric, same period, same scope, and a
+₹70 crore gap with nothing to explain it. The system flagged this as a
+genuine contradiction at 97% confidence — a claim that needs a human to
+look at, not silently averaged away."
+
+------------------------------------------------------------
+2:05 – 2:30   CASE 3 — CONTEXTUAL RECONCILIATION (confirmed live result, 95%)
+------------------------------------------------------------
+[ON SCREEN: Conflict Explorer, the SCOPE_DIFFERENCE entry between Q1 FY2026
+revenue (₹80 crore) and full-year FY2026 guidance (₹320 crore) — confidence
+95%]
+
+"This next one looks like a contradiction at first — ₹80 crore versus
+₹320 crore for the same company and the same fiscal year — but the system
+recognized that one is just the first quarter, and one is the full-year
+figure, roughly a 25% share, which is exactly what you'd expect. It explains
+the reasoning, not just the label — this one came back with 95% confidence
+because the math genuinely lines up."
+
+------------------------------------------------------------
+2:30 – 2:55   CASE 4 — A REAL EXTRACTION FAILURE (from the actual data)
+------------------------------------------------------------
+[ON SCREEN: Fact Explorer, search "workforce" or "tonnage" — show the two
+facts from the real Delhivery annual report: "Workforce strength = >4.8Mn
+tonnes" and "Part-truckload freight delivered = 98,135"]
+
+"And this is one I want to be upfront about, because the assignment
+specifically asks for a genuine failure, not a cherry-picked success. On
+this infographic page, the system swapped two numbers: 98,135 is actually
+Delhivery's workforce headcount, and 4.8 million tonnes is freight tonnage
+— but the extractor paired each number with the wrong label. Both quotes
+are real and verified against the source page — that part worked — but the
+pairing is wrong, because the page's visual layout doesn't linearize
+cleanly into plain text. That's an honest, reproducible limitation, and the
+README explains exactly how I'd fix it: keep the layout coordinates PyMuPDF
+already gives us and use spatial proximity, not just text order."
+
+------------------------------------------------------------
+2:55 – 3:00   CLOSE
+------------------------------------------------------------
+[ON SCREEN: back to the chat or homepage]
+
+"That's Groundwork — facts grounded in evidence, corroboration and
+contradiction surfaced automatically, context-aware reconciliation, and
+honesty about where it still gets things wrong."
+
+==================================
+NOTES FOR RECORDING
+==================================
+- All three Conflict Explorer numbers in this script (97% corroboration,
+  97% contradiction, 95% reconciliation) are real, confirmed, currently
+  sitting in the database — not placeholders. If you re-run the pipeline
+  before recording and a number shifts slightly, just say what's actually
+  on screen; the pattern (two facts, relationship type, explanation,
+  confidence) will still match.
+- If Groq's free-tier rate limit interrupts the LIVE upload's fact
+  extraction during recording (step 0:20-0:50), that's a real, documented
+  constraint (see README > Trade-offs) — mention it briefly ("this
+  free-tier key has a daily budget") or just let it sit in "processing" a
+  few extra seconds; it typically recovers within a minute.
+- Total runtime target: 2:55–3:00. If running long, trim the intro (0:00–0:20)
+  first — Cases 1-4 are the graded content and should stay intact.

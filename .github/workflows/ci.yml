@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  core:
+    name: Rust core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: services/core
+      - run: cargo check
+        working-directory: services/core
+
+  intelligence:
+    name: Python intelligence service
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+        working-directory: services/intelligence
+      - name: Import check
+        working-directory: services/intelligence
+        run: python -c "from app.main import app; print('routes:', [r.path for r in app.routes])"
+      - name: Unit tests (quote grounding, no live Groq calls)
+        working-directory: services/intelligence
+        run: |
+          python -c "
+          from app.quote_grounding import find_quote_span
+          assert find_quote_span('Revenue was 100 crore.', '100 crore') == (12, 21)
+          assert find_quote_span('Revenue was 100 crore.', 'not present') is None
+          print('quote_grounding OK')
+          "
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+
+  web:
+    name: Next.js web app
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+        working-directory: apps/web

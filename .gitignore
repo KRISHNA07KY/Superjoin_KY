@@ -1,0 +1,32 @@
+# local tooling
+.claude/
+
+# env / secrets
+.env
+.env.local
+*.local
+
+# rust
+services/core/target/
+
+# python
+services/intelligence/__pycache__/
+services/intelligence/.venv/
+services/intelligence/*.egg-info/
+**/__pycache__/
+*.pyc
+
+# node
+node_modules/
+apps/web/.next/
+apps/web/out/
+**/node_modules/
+
+# db / misc
+infra/db/data/
+services/core/data/
+scripts/eval/synthetic/
+*.log
+.DS_Store
+Thumbs.db
+apps/web/tsconfig.tsbuildinfo

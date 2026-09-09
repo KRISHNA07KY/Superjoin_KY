@@ -1,0 +1,12 @@
+:root {
+  --ease-out-soft: cubic-bezier(.22,1,.36,1);
+  --ease-snap: cubic-bezier(.5,0,.15,1);
+
+  --dur-fast: 0.15s;
+  --dur-base: 0.22s;
+  --dur-slow: 0.4s;
+
+  --lift-hover: -1px;
+  --lift-hover-card: -2px;
+  --press-scale: 0.98;
+}
